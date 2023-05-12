@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_message"
+        android:icon="@drawable/home_navigation_message_figma"
+        android:title="Tin nhắn"
+        />
+    <item
+        android:id="@+id/home_user_profile"
+        android:icon="@drawable/home_navigation_profile_figma"
+        android:title="Cá nhân"
+        />
+    <item
+        android:id="@+id/home_social_profile"
+        android:icon="@drawable/home_navigation_social_figma"
+        android:title="Mọi người"
+        />
+    <item
+        android:id="@+id/home_setting"
+        android:icon="@drawable/home_navigation_setting_figma"
+        android:title="Cài đặt"
+        />
+
+</menu>
