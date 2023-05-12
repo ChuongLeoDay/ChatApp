@@ -92,9 +92,6 @@ class SettingFragment : Fragment() {
 
             val btnYes : Button = dialog.findViewById(R.id.btn_alert_dialog_yes)
             val btnNo : Button = dialog.findViewById(R.id.btn_alert_dialog_no)
-            val imageIcon : ImageView = dialog.findViewById(R.id.icon_custom_dialog)
-            val textMainDialog : TextView = dialog.findViewById(R.id.text_alert_main_dialog_custom)
-            val textNotificationDialog : TextView = dialog.findViewById(R.id.text_title_notification_dialog_custom)
             if(code == 1) {
                 btnYes.setOnClickListener {
                     auth.signOut()

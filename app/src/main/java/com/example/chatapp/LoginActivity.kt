@@ -91,10 +91,10 @@ class LoginActivity : AppCompatActivity() {
                                     if (task.isSuccessful) {
                                         if (auth != null) {
                                             val uid = auth.currentUser?.uid.toString()
-                                            val docRef = dbFireStore.collection("users").document(uid)
+                                            val docRef = dbFireStore.collection("users").whereEqualTo("uid", uid)
                                             docRef.get()
                                                 .addOnSuccessListener { documentSnapshot ->
-                                                    if (documentSnapshot.exists()) {
+                                                    if (!documentSnapshot.isEmpty) {
                                                         val i = Intent(this@LoginActivity, UserActivity::class.java )
                                                         startActivity(i)
                                                         finish()
