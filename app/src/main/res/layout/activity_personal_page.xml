@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PersonalPageActivity">
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/chat_send_background"
+        android:contentDescription="back_to_userActivity"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        app:srcCompat="@drawable/chat_back_icon_figma"
+        app:tint="@color/black" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".12" />
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Tìm kiếm"
+        android:textColor="#BF000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton"
+        app:layout_constraintStart_toEndOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="@+id/imageButton" />
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/custom_card_view_card"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView3"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_user_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/com_facebook_profile_picture_blank_square" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/edit_name_user_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Lê Võ Viết Chương"
+                android:textColor="#BF000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
+            <Button
+                android:id="@+id/btn_send_mess_user_page"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/edit_button_normal"
+                android:text="Nhắn tin"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_name_user_page" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:background="#40000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_send_mess_user_page" />
+
+            <LinearLayout
+                android:id="@+id/layout_info_social_page"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_click_to_facebook_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/imageButton7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="facebook"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/facebook_negative_profile" />
+
+                    <TextView
+                        android:id="@+id/account_name_facebook_page"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Leo Chương"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageButton7"
+                        app:layout_constraintStart_toEndOf="@+id/imageButton7"
+                        app:layout_constraintTop_toTopOf="@+id/imageButton7" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_click_to_instagram_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/imageButton8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="facebook"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/instagram_negative_profile" />
+
+                    <TextView
+                        android:id="@+id/account_instagram_page"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="chuong_leo_ahihi"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageButton8"
+                        app:layout_constraintStart_toEndOf="@+id/imageButton8"
+                        app:layout_constraintTop_toTopOf="@+id/imageButton8" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_click_to_tiktok_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/imageButton9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="facebook"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/tiktok_negative_profile" />
+
+                    <TextView
+                        android:id="@+id/account_tiktok_page"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="chapper"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageButton9"
+                        app:layout_constraintStart_toEndOf="@+id/imageButton9"
+                        app:layout_constraintTop_toTopOf="@+id/imageButton9" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="#40000000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_info_social_page" />
+
+            <LinearLayout
+                android:id="@+id/layout_info_contact_user_page"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/imageButton11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/phone_user_figma"
+                        app:tint="#000000"
+                        tools:ignore="MissingConstraints" />
+
+                    <TextView
+                        android:id="@+id/edit_phone_user_page"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+84707719367"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageButton11"
+                        app:layout_constraintTop_toTopOf="@+id/imageButton11" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/imageButton12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        app:srcCompat="@drawable/email_icon_figma"
+                        app:tint="#000000"
+                        tools:ignore="MissingConstraints" />
+
+                    <TextView
+                        android:id="@+id/edit_email_user_page"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chuong19052003@gmail.com"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageButton12"
+                        app:layout_constraintTop_toTopOf="@+id/imageButton12" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/imageButton10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        app:srcCompat="@drawable/birthday_cake_icon"
+                        app:tint="#000000"
+                        tools:ignore="MissingConstraints" />
+
+                    <TextView
+                        android:id="@+id/edit_birthday_user_page"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="09/05/2003"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageButton10"
+                        app:layout_constraintTop_toTopOf="@+id/imageButton10" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

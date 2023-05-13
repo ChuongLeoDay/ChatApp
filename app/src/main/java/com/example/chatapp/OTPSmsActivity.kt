@@ -140,7 +140,7 @@ class OTPSmsActivity : AppCompatActivity() {
                                     urlUser.addOnSuccessListener {
                                         val urlFinalImage = it.toString()
                                         if(nameUser != null && birthdayUser != null && genderUser !=null && emailUser != null && phoneUser != null && uidUser != null) {
-                                            val dataUser = userInfomationModel(urlFinalImage, nameUser,birthdayUser, genderUser, emailUser, phoneUser, uidUser)
+                                            val dataUser = userInfomationModel(nameUser, urlFinalImage,birthdayUser, genderUser, emailUser, phoneUser, uidUser)
                                             val dataUserUpload = hashMapOf(
                                                 "urlImage" to dataUser.imageUserURL,
                                                 "name" to dataUser.nameUser,
@@ -148,7 +148,10 @@ class OTPSmsActivity : AppCompatActivity() {
                                                 "gender" to dataUser.genderUser,
                                                 "email" to dataUser.emailUser,
                                                 "phoneNumber" to dataUser.phoneNumberUser,
-                                                "uid" to dataUser.uidUser
+                                                "uid" to dataUser.uidUser,
+                                                "checkPrivatePhone" to dataUser.checkPrivatePhone,
+                                                "checkPrivateEmail" to dataUser.checkPrivateEmail,
+                                                "checkPrivateBirthday" to dataUser.checkPrivateBirthday
                                             )
 
                                             dbFireStore.collection("users").add(dataUserUpload)
@@ -200,7 +203,7 @@ class OTPSmsActivity : AppCompatActivity() {
                                         urlUser.addOnSuccessListener {
                                             val urlFinalImage = it.toString()
                                             if(nameUser != null && birthdayUser != null && genderUser !=null && emailUser != null && phoneUser != null && uidUser != null) {
-                                                val dataUser = userInfomationModel(urlFinalImage, nameUser,birthdayUser, genderUser, emailUser, phoneUser, uidUser)
+                                                val dataUser = userInfomationModel(nameUser, urlFinalImage,birthdayUser, genderUser, emailUser, phoneUser, uidUser)
                                                 val dataUserUpload = hashMapOf(
                                                     "urlImage" to dataUser.imageUserURL,
                                                     "name" to dataUser.nameUser,
@@ -208,7 +211,10 @@ class OTPSmsActivity : AppCompatActivity() {
                                                     "gender" to dataUser.genderUser,
                                                     "email" to dataUser.emailUser,
                                                     "phoneNumber" to dataUser.phoneNumberUser,
-                                                    "uid" to dataUser.uidUser
+                                                    "uid" to dataUser.uidUser,
+                                                    "checkPrivatePhone" to dataUser.checkPrivatePhone,
+                                                    "checkPrivateEmail" to dataUser.checkPrivateEmail,
+                                                    "checkPrivateBirthday" to dataUser.checkPrivateBirthday
                                                 )
                                                 dbFireStore.collection("users").add(dataUserUpload)
                                                     .addOnSuccessListener {

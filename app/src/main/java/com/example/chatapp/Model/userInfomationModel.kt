@@ -9,8 +9,12 @@ data class userInfomationModel(
     @get:PropertyName("gender") @set:PropertyName("gender") var genderUser : String,
     @get:PropertyName("email") @set:PropertyName("email") var emailUser : String,
     @get:PropertyName("phoneNumber") @set:PropertyName("phoneNumber") var phoneNumberUser : String,
-    @get:PropertyName("uid") @set:PropertyName("uid") var uidUser : String
-) {
+    @get:PropertyName("uid") @set:PropertyName("uid") var uidUser : String,
+    @get:PropertyName("checkPrivatePhone") @set:PropertyName("checkPrivatePhone") var checkPrivatePhone : Boolean = true,
+    @get:PropertyName("checkPrivateEmail") @set:PropertyName("checkPrivateEmail") var checkPrivateEmail : Boolean = true,
+    @get:PropertyName("checkPrivateBirthday") @set:PropertyName("checkPrivateBirthday") var checkPrivateBirthday : Boolean = true
+
+    ) {
     // Empty constructor required by Firestore
-    constructor() : this("", "", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", "", true, true, true)
 }

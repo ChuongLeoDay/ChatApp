@@ -100,12 +100,16 @@ class SocialFragment : Fragment() {
                 .orderBy("email")
                 .orderBy("phoneNumber")
                 .orderBy("uid")
+                .orderBy("checkPrivatePhone")
+                .orderBy("checkPrivateEmail")
+                .orderBy("checkPrivateBirthday")
         }
 
         queryRef.get()
             .addOnSuccessListener { result ->
                 val infoUserSocial = ArrayList<userInfomationModel>()
                 for (document in result) {
+                    document.getString("uid")
                     val infoUser = document.toObject(userInfomationModel::class.java)
                     infoUserSocial.add(infoUser)
                 }

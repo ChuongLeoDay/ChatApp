@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/background_dialog_custom"
+    android:padding="8dp"
+    android:pointerIcon="arrow">
+
+    <TextView
+        android:id="@+id/textView34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chọn mạng xã hội"
+        android:textColor="#BF000000"
+        app:layout_constraintStart_toStartOf="@+id/spinnerChooseSocial"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerChooseSocial"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edit_back_gournd_alpha_stoke"
+        android:contentDescription="chooseSocial"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:pointerIcon="arrow"
+        android:popupBackground="@color/app_theme_light"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView34" />
+
+    <EditText
+        android:id="@+id/name_acccount"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edit_back_gournd_alpha_stoke"
+        android:ems="10"
+        android:hint="Nhập tên tài khoản"
+        android:inputType="textPersonName"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerChooseSocial" />
+
+    <EditText
+        android:id="@+id/link_acccount"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edit_back_gournd_alpha_stoke"
+        android:ems="10"
+        android:hint="Nhập link đường dẫn"
+        android:inputType="textPersonName"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_acccount" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/confirm_edit_backgournd_social_media"
+        android:text="Xác nhận"
+        android:textColor="#FBFBFB"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/link_acccount"
+        app:layout_constraintTop_toBottomOf="@+id/link_acccount" />
+
+    <Button
+        android:id="@+id/btn_dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/background_gradient_layout"
+        android:text="Huỷ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/link_acccount" />
+</androidx.constraintlayout.widget.ConstraintLayout>
