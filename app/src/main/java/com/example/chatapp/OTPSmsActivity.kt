@@ -140,40 +140,7 @@ class OTPSmsActivity : AppCompatActivity() {
                                     urlUser.addOnSuccessListener {
                                         val urlFinalImage = it.toString()
                                         if(nameUser != null && birthdayUser != null && genderUser !=null && emailUser != null && phoneUser != null && uidUser != null) {
-                                            val dataUser = userInfomationModel(nameUser, urlFinalImage,birthdayUser, genderUser, emailUser, phoneUser, uidUser)
-                                            val dataUserUpload = hashMapOf(
-                                                "urlImage" to dataUser.imageUserURL,
-                                                "name" to dataUser.nameUser,
-                                                "birthday" to dataUser.birthdayUser,
-                                                "gender" to dataUser.genderUser,
-                                                "email" to dataUser.emailUser,
-                                                "phoneNumber" to dataUser.phoneNumberUser,
-                                                "uid" to dataUser.uidUser,
-                                                "checkPrivatePhone" to dataUser.checkPrivatePhone,
-                                                "checkPrivateEmail" to dataUser.checkPrivateEmail,
-                                                "checkPrivateBirthday" to dataUser.checkPrivateBirthday
-                                            )
-
-                                            dbFireStore.collection("users").add(dataUserUpload)
-                                                .addOnSuccessListener {
-                                                    if(auth.currentUser != null) {
-                                                        ProgressDialogUtil.hideProgressDialog()
-                                                        val i = Intent(this@OTPSmsActivity, UserActivity::class.java)
-                                                        startActivity(i)
-                                                        finish()
-                                                    }
-                                                    else {
-                                                        ProgressDialogUtil.hideProgressDialog()
-                                                        val i = Intent(this@OTPSmsActivity, LoginActivity::class.java)
-                                                        startActivity(i)
-                                                        finish()
-                                                    }
-                                                }
-                                                .addOnFailureListener {
-                                                    ProgressDialogUtil.hideProgressDialog()
-                                                    Toast.makeText(this@OTPSmsActivity, "Thêm thông tin thất bại(add on firebase)", Toast.LENGTH_SHORT).show()
-                                                }
-
+                                            addUserOnFireStorage(nameUser, urlFinalImage, birthdayUser, genderUser, emailUser, phoneUser, uidUser)
                                         } else {
                                             ProgressDialogUtil.hideProgressDialog()
                                             Toast.makeText(this@OTPSmsActivity, "Lỗi nhận thông tin", Toast.LENGTH_SHORT).show()
@@ -203,39 +170,7 @@ class OTPSmsActivity : AppCompatActivity() {
                                         urlUser.addOnSuccessListener {
                                             val urlFinalImage = it.toString()
                                             if(nameUser != null && birthdayUser != null && genderUser !=null && emailUser != null && phoneUser != null && uidUser != null) {
-                                                val dataUser = userInfomationModel(nameUser, urlFinalImage,birthdayUser, genderUser, emailUser, phoneUser, uidUser)
-                                                val dataUserUpload = hashMapOf(
-                                                    "urlImage" to dataUser.imageUserURL,
-                                                    "name" to dataUser.nameUser,
-                                                    "birthday" to dataUser.birthdayUser,
-                                                    "gender" to dataUser.genderUser,
-                                                    "email" to dataUser.emailUser,
-                                                    "phoneNumber" to dataUser.phoneNumberUser,
-                                                    "uid" to dataUser.uidUser,
-                                                    "checkPrivatePhone" to dataUser.checkPrivatePhone,
-                                                    "checkPrivateEmail" to dataUser.checkPrivateEmail,
-                                                    "checkPrivateBirthday" to dataUser.checkPrivateBirthday
-                                                )
-                                                dbFireStore.collection("users").add(dataUserUpload)
-                                                    .addOnSuccessListener {
-                                                        if(auth.currentUser != null) {
-                                                            ProgressDialogUtil.hideProgressDialog()
-                                                            val i = Intent(this@OTPSmsActivity, UserActivity::class.java)
-                                                            startActivity(i)
-                                                            finish()
-                                                        }
-                                                        else {
-                                                            ProgressDialogUtil.hideProgressDialog()
-                                                            val i = Intent(this@OTPSmsActivity, LoginActivity::class.java)
-                                                            startActivity(i)
-                                                            finish()
-                                                        }
-                                                    }
-                                                    .addOnFailureListener {
-                                                        ProgressDialogUtil.hideProgressDialog()
-                                                        Toast.makeText(this@OTPSmsActivity, "Thêm thông tin thất bại(add on firebase)", Toast.LENGTH_SHORT).show()
-                                                    }
-
+                                                    addUserOnFireStorage(nameUser, urlFinalImage, birthdayUser, genderUser, emailUser, phoneUser, uidUser)
                                             } else {
                                                 ProgressDialogUtil.hideProgressDialog()
                                                 Toast.makeText(this@OTPSmsActivity, "Lỗi nhận thông tin", Toast.LENGTH_SHORT).show()
@@ -264,6 +199,41 @@ class OTPSmsActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this@OTPSmsActivity, "Hãy nhập mã xác nhận", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun addUserOnFireStorage(nameUser : String, urlFinalImage : String, birthdayUser : String, genderUser : String, emailUser : String, phoneUser : String, uidUser : String) {
+        val dataUser = userInfomationModel(nameUser, urlFinalImage,birthdayUser, genderUser, emailUser, phoneUser, uidUser)
+        val dataUserUpload = hashMapOf(
+            "urlImage" to dataUser.imageUserURL,
+            "name" to dataUser.nameUser,
+            "birthday" to dataUser.birthdayUser,
+            "gender" to dataUser.genderUser,
+            "email" to dataUser.emailUser,
+            "phoneNumber" to dataUser.phoneNumberUser,
+            "uid" to dataUser.uidUser,
+            "checkPrivatePhone" to dataUser.checkPrivatePhone,
+            "checkPrivateEmail" to dataUser.checkPrivateEmail,
+            "checkPrivateBirthday" to dataUser.checkPrivateBirthday
+        )
+        dbFireStore.collection("users").add(dataUserUpload)
+            .addOnSuccessListener {
+                if(auth.currentUser != null) {
+                    ProgressDialogUtil.hideProgressDialog()
+                    val i = Intent(this@OTPSmsActivity, UserActivity::class.java)
+                    startActivity(i)
+                    finish()
+                }
+                else {
+                    ProgressDialogUtil.hideProgressDialog()
+                    val i = Intent(this@OTPSmsActivity, LoginActivity::class.java)
+                    startActivity(i)
+                    finish()
+                }
+            }
+            .addOnFailureListener {
+                ProgressDialogUtil.hideProgressDialog()
+                Toast.makeText(this@OTPSmsActivity, "Thêm thông tin thất bại(add on firebase)", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun callbackAuthenciationPhone(PhoneNumber : String) {

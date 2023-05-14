@@ -75,7 +75,7 @@
         android:textColor="#FBFBFB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/link_acccount"
-        app:layout_constraintTop_toBottomOf="@+id/link_acccount" />
+        app:layout_constraintTop_toBottomOf="@+id/textView36" />
 
     <Button
         android:id="@+id/btn_dismiss"
@@ -87,5 +87,16 @@
         android:text="Huỷ"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/textView36" />
+
+    <TextView
+        android:id="@+id/textView36"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Lưu ý: Những thông tin này sẽ được công khai trên trang cá nhân của bạn"
+        android:textColor="@color/app_theme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/link_acccount" />
 </androidx.constraintlayout.widget.ConstraintLayout>

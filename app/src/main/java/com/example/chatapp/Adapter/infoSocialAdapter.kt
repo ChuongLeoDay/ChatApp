@@ -1,5 +1,7 @@
 package com.example.chatapp.Adapter
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.chatapp.Model.userInfomationModel
+import com.example.chatapp.PersonalPageActivity
 import com.example.chatapp.R
 
 class infoSocialAdapter(var infoUsers : ArrayList<userInfomationModel>) : RecyclerView.Adapter<infoSocialAdapter.MyViewHolder>() {
@@ -35,6 +38,13 @@ class infoSocialAdapter(var infoUsers : ArrayList<userInfomationModel>) : Recycl
             .load(currentItem.imageUserURL)
             .apply(requestOptions)
             .into(holder.imageUserInfo)
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, PersonalPageActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("uidPersonal", currentItem.uidUser)
+            intent.putExtras(bundle)
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
     class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
