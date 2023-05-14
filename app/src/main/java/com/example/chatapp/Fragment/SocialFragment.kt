@@ -1,14 +1,20 @@
 package com.example.chatapp.Fragment
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapp.Adapter.infoSocialAdapter
@@ -16,6 +22,8 @@ import com.example.chatapp.Model.userInfomationModel
 import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentProFileBinding
 import com.example.chatapp.databinding.FragmentSocialBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -37,6 +45,7 @@ class SocialFragment : Fragment() {
     private lateinit var binding : FragmentSocialBinding
     private val dbFireStore = Firebase.firestore
     private val infoSocialAdapter = infoSocialAdapter(ArrayList())
+    private lateinit var auth : FirebaseAuth
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -54,18 +63,32 @@ class SocialFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentSocialBinding.inflate(inflater, container, false)
+        auth = Firebase.auth
         initUI()
         return binding.root
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun initUI() {
         val rvUsers : RecyclerView = binding.recyclerSocialInfo
         val searchUsers : SearchView = binding.btnSearchViewSocial
+
 
         rvUsers.layoutManager = LinearLayoutManager(context)
 
         rvUsers.apply { adapter = infoSocialAdapter }
 
+        binding.root.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val outRect = Rect()
+                    searchUsers.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    searchUsers.clearFocus()
+                    hideKeyboard()
+                }
+            }
+            false
+        }
 
 
         searchUsers.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -84,7 +107,23 @@ class SocialFragment : Fragment() {
             }
 
         })
+
+        searchUsers.setOnFocusChangeListener {  _, hasFocus ->
+            if (!hasFocus) {
+                infoSocialAdapter.infoUsers.clear()
+                infoSocialAdapter.notifyDataSetChanged()
+            }
+        }
+
+
     }
+
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        binding.btnSearchViewSocial.clearFocus()
+    }
+
 
     private fun searchInfoUsers(query: String?) {
         val queryRef = if (query.isNullOrEmpty()) {
@@ -108,11 +147,15 @@ class SocialFragment : Fragment() {
         queryRef.get()
             .addOnSuccessListener { result ->
                 val infoUserSocial = ArrayList<userInfomationModel>()
+                var uid: String?
                 for (document in result) {
-                    document.getString("uid")
-                    val infoUser = document.toObject(userInfomationModel::class.java)
-                    infoUserSocial.add(infoUser)
+                    uid = document.getString("uid")
+                    if (uid != auth.currentUser?.uid) {
+                        val infoUser = document.toObject(userInfomationModel::class.java)
+                        infoUserSocial.add(infoUser)
+                    }
                 }
+
                 infoSocialAdapter.apply {
                     this.infoUsers = infoUserSocial
                     notifyDataSetChanged()

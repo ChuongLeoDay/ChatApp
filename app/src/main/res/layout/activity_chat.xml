@@ -29,9 +29,9 @@
         android:elevation="0dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardElevation="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintBottom_toBottomOf="@+id/click_to_back_from_chat_to_activity"
         app:layout_constraintStart_toEndOf="@+id/click_to_back_from_chat_to_activity"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/click_to_back_from_chat_to_activity">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -77,9 +77,9 @@
         android:orientation="vertical"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView4"
         app:layout_constraintStart_toEndOf="@+id/cardView4"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/cardView4">
 
         <TextView
             android:id="@+id/edit_text_chat_user_name"
@@ -109,6 +109,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/background_chat_page_personal"
         android:elevation="4dp"
         android:padding="16dp"
@@ -150,14 +151,14 @@
                         app:srcCompat="@drawable/happy_icon_chat_figma" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName3"
+                        android:id="@+id/edit_text_mess_user_chat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:ems="10"
-                        android:hint="Nhập tin nhắn..."
-                        android:inputType="textPersonName"
+                        android:hint="Nhập tin..."
+                        android:inputType="textMultiLine"
                         android:maxHeight="80dp"
                         android:maxLines="3"
                         android:minHeight="60dp"
@@ -188,7 +189,7 @@
 
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/btn_send_mess_chat"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
