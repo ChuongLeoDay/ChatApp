@@ -20,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.chatapp.Animation.ProgressDialogUtil
 import com.example.chatapp.LoginActivity
 import com.example.chatapp.R
+import com.example.chatapp.SercurityActivity
 import com.example.chatapp.databinding.FragmentSettingBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -74,6 +75,12 @@ class SettingFragment : Fragment() {
         val clickToLogOut: ConstraintLayout = binding.editLogoutUserSetting
         val imageUser : ImageView = binding.imageUserSetting
         val nameUser : TextView = binding.editNameUserSetting
+        val clickToSercurity : ConstraintLayout = binding.editSecurityUserSetting
+
+        clickToSercurity.setOnClickListener {
+            val i = Intent(activity, SercurityActivity::class.java)
+            startActivity(i)
+        }
 
         getDataUser(imageUser, nameUser)
 

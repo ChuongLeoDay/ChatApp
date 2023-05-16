@@ -20,8 +20,20 @@
         <item name="android:colorForeground">#B3000000</item>
     </style>
 
+    <style name="phoneModeSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/warning_notification_color</item>
+        <item name="colorSwitchThumbNormal">#FFFFFF</item>
+        <item name="android:colorForeground">#B3000000</item>
+    </style>
+
     <style name="notificationSwitch" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">#23c552</item>
+        <item name="colorSwitchThumbNormal">#FFFFFF</item>
+        <item name="android:colorForeground">#B3000000</item>
+    </style>
+
+    <style name="birthdaySwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/app_theme</item>
         <item name="colorSwitchThumbNormal">#FFFFFF</item>
         <item name="android:colorForeground">#B3000000</item>
     </style>

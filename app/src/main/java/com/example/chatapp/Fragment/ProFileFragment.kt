@@ -2,8 +2,10 @@ package com.example.chatapp.Fragment
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -64,6 +66,7 @@ class ProFileFragment : Fragment() {
         binding = FragmentProFileBinding.inflate(inflater, container, false)
         auth = Firebase.auth
         initUI()
+        goToSocialMedia()
         return binding.root
     }
 
@@ -239,6 +242,62 @@ class ProFileFragment : Fragment() {
             }
     }
 
+    private fun goToSocialMedia() {
+        val userInfoTikTok = dbFireStore.collection("TikTokSocialInfoUsers")
+        val userInfoFacebook = dbFireStore.collection("FacebookSocialInfoUsers")
+        val userInfoInstagram = dbFireStore.collection("InstagramSocialInfoUsers")
+        val uidUser = auth.currentUser?.uid
+
+            binding.btnSocialFbProfile.setOnClickListener {
+                userInfoFacebook.whereEqualTo("uid", uidUser)
+                    .get()
+                    .addOnSuccessListener{
+                        doc ->
+                        if (!doc.isEmpty) {
+                            for (d in doc) {
+                                val linkAccount = d.getString("linkAccount")
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(linkAccount))
+                                startActivity(intent)
+                            }
+                        }
+                    }
+            }
+
+
+
+            binding.btnSocialInsProfile.setOnClickListener {
+                userInfoInstagram.whereEqualTo("uid", uidUser)
+                    .get()
+                    .addOnSuccessListener{
+                            doc ->
+                        if (!doc.isEmpty) {
+                            for (d in doc) {
+                                val linkAccount = d.getString("linkAccount")
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(linkAccount))
+                                startActivity(intent)
+                            }
+                        }
+                    }
+            }
+
+
+
+            binding.btnSocialTiktokProfile.setOnClickListener {
+                userInfoTikTok.whereEqualTo("uid", uidUser)
+                    .get()
+                    .addOnSuccessListener{
+                            doc ->
+                        if (!doc.isEmpty) {
+                            for (d in doc) {
+                                val linkAccount = d.getString("linkAccount")
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(linkAccount))
+                                startActivity(intent)
+                            }
+                        }
+                    }
+            }
+
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
