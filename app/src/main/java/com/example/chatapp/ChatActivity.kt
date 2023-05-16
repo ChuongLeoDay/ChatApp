@@ -18,7 +18,6 @@ import com.example.chatapp.Model.messageModel
 import com.example.chatapp.databinding.ActivityChatBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -128,6 +127,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun readChat(idRoomChat: String?) {
+        checkAndUpdateReadStatus()
         val rvChat : RecyclerView = binding.rvMessChat
         rvChat.apply { adapter = chatAdapter }
         rvChat.layoutManager = LinearLayoutManager(this)
@@ -154,6 +154,58 @@ class ChatActivity : AppCompatActivity() {
 
         })
     }
+
+    private fun checkAndUpdateReadStatus() {
+        if (idRoomChat != null) {
+            val messageRef = rtDb.getReference("Messages").child(idRoomChat!!)
+            messageRef
+                .limitToLast(15)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val messages = mutableListOf<messageModel>()
+
+                        // Kiểm tra xem có tồn tại tin nhắn trong node không
+                        if (dataSnapshot.exists()) {
+                            // Lặp qua danh sách 15 tin nhắn gần nhất (đã được sắp xếp theo thứ tự ngược)
+                            for (messageSnapshot in dataSnapshot.children.reversed()) {
+                                val message = messageSnapshot.getValue(messageModel::class.java)
+
+                                if (message != null) {
+                                    messages.add(message)
+                                }
+                                // Kiểm tra nếu danh sách tin nhắn không rỗng
+                                if (messages.isNotEmpty()) {
+                                    val childUpdates = HashMap<String, Any>()
+                                    for (message in messages) {
+                                        if (message.isRead == "false_${uidPersonal}") {
+                                            val messageId = messageSnapshot.key
+                                            if (messageId != null) {
+                                                childUpdates["/$messageId/read"] = "true_${uidPersonal}"
+                                            }
+                                        }
+                                    }
+                                    messageRef.updateChildren(childUpdates)
+                                } else {
+                                    // Node không có tin nhắn
+                                    // Xử lý trường hợp không có tin nhắn theo yêu cầu
+                                }
+                            }
+
+                        } else {
+                            // Node không có tin nhắn
+                            // Xử lý trường hợp không có tin nhắn theo yêu cầu
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // Xử lý lỗi nếu có
+                    }
+                })
+        }
+    }
+
+
+
 
     private fun addDataMess(contentMessage: String, editTextInputMess: EditText) {
         if (idRoomChat != null && checkRoomChat == true) {
@@ -183,7 +235,7 @@ class ChatActivity : AppCompatActivity() {
                                                 "text",
                                                 timeFormat.format(currentTime), // Trường chỉ có giờ và phút
                                                 dateFormat.format(currentTime),
-                                                "true_${auth.currentUser?.uid}",
+                                                "false_${auth.currentUser?.uid}",
                                                 "true_${auth.currentUser?.uid}"
                                             )
                                             val messageId = rtDb.getReference("Messages").child(idRoomChat!!).push().key ?: ""
