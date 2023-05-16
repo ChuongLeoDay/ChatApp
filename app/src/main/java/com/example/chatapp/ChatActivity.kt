@@ -1,5 +1,6 @@
 package com.example.chatapp
 
+import ChatAdapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -8,6 +9,8 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.chatapp.Model.RoomChat
@@ -15,11 +18,17 @@ import com.example.chatapp.Model.messageModel
 import com.example.chatapp.databinding.ActivityChatBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 class ChatActivity : AppCompatActivity() {
 
@@ -32,13 +41,17 @@ class ChatActivity : AppCompatActivity() {
         .centerCrop()
         .placeholder(R.drawable.asset_11)
         .error(R.drawable.danger_triangle_alert_figma)
+    private var checkRoomChat : Boolean? = null
+    private var idRoomChat : String? = null
     private var uidPersonal: String? = null
+    private val chatAdapter = ChatAdapter(ArrayList(), this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         val view = binding.root
         auth = Firebase.auth
         initUI()
+        checkRoomChat()
         setContentView(view)
     }
 
@@ -94,43 +107,165 @@ class ChatActivity : AppCompatActivity() {
         getDataUserChat(imageUserChat, nameUserChat, uidPersonal)
     }
 
-    private fun addDataMess(contentMessage: String, editTextInputMess : EditText) {
-        if (uidPersonal != null) {
+    private fun checkRoomChat() {
+        if(uidPersonal != null) {
+            dbFireStore.collection("RoomChat")
+                .whereIn("idRoomChat", listOf("${auth.currentUser?.uid}_${uidPersonal}", "${uidPersonal}_${auth.currentUser?.uid}"))
+                .get()
+                .addOnSuccessListener { documents ->
+                    if(documents.isEmpty) {
+                        checkRoomChat = false
+                    }
+                    else {
+                        for (doc in documents) {
+                           idRoomChat = doc.getString("idRoomChat")
+                            checkRoomChat = true
+                            readChat(idRoomChat)
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun readChat(idRoomChat: String?) {
+        val rvChat : RecyclerView = binding.rvMessChat
+        rvChat.apply { adapter = chatAdapter }
+        rvChat.layoutManager = LinearLayoutManager(this)
+        val messagesRef = rtDb.getReference("Messages")
+        val roomRef = idRoomChat?.let { messagesRef.child(it) }
+        roomRef?.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val messageList = ArrayList<messageModel>()
+                    for (snapMess in snapshot.children) {
+                        val message = snapMess.getValue(messageModel::class.java)
+                        messageList.add(message!!)
+                    }
+                    chatAdapter.apply {
+                        this.message = messageList
+                        notifyDataSetChanged()
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    private fun addDataMess(contentMessage: String, editTextInputMess: EditText) {
+        if (idRoomChat != null && checkRoomChat == true) {
+            val database = rtDb.getReference("Messages").child(idRoomChat!!)
+            database.orderByChild("lastSend")
+                .equalTo("true_${auth.currentUser?.uid}")
+                .limitToLast(1)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            for (messageSnapshot in dataSnapshot.children) {
+                                val lastMessageId = messageSnapshot.key
+                                if (lastMessageId != null) {
+                                    // Sửa trường lastSend thành "false_${auth.currentUser?.uid}"
+                                    database.child(lastMessageId).child("lastSend")
+                                        .setValue("false_${auth.currentUser?.uid}")
+                                        .addOnSuccessListener {
+                                            // Gửi tin nhắn mới lên cơ sở dữ liệu
+                                            val currentTime = Calendar.getInstance().time
+                                            val timeFormat = SimpleDateFormat("HH:mm")
+                                            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+
+                                            val message = messageModel(
+                                                auth.currentUser?.uid,
+                                                uidPersonal,
+                                                contentMessage,
+                                                "text",
+                                                timeFormat.format(currentTime), // Trường chỉ có giờ và phút
+                                                dateFormat.format(currentTime),
+                                                "true_${auth.currentUser?.uid}",
+                                                "true_${auth.currentUser?.uid}"
+                                            )
+                                            val messageId = rtDb.getReference("Messages").child(idRoomChat!!).push().key ?: ""
+                                            rtDb.getReference("Messages").child(idRoomChat!!).child(messageId).setValue(message)
+                                                .addOnSuccessListener {
+                                                    editTextInputMess.setText("")
+                                                    readChat(idRoomChat)
+                                                }
+                                        }
+                                        .addOnFailureListener { error ->
+                                            // Xử lý khi sửa trường thất bại
+                                            // ...
+                                        }
+                                }
+                            }
+                        } else {
+                            // Gửi tin nhắn mới lên cơ sở dữ liệu
+                            val currentTime = Calendar.getInstance().time
+                            val timeFormat = SimpleDateFormat("HH:mm")
+                            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+
+                            val message = messageModel(
+                                auth.currentUser?.uid,
+                                uidPersonal,
+                                contentMessage,
+                                "text",
+                                timeFormat.format(currentTime), // Trường chỉ có giờ và phút
+                                dateFormat.format(currentTime),
+                                "true_${auth.currentUser?.uid}",
+                                "true_${auth.currentUser?.uid}"
+                            )
+                            val messageId = rtDb.getReference("Messages").child(idRoomChat!!).push().key ?: ""
+                            rtDb.getReference("Messages").child(idRoomChat!!).child(messageId).setValue(message)
+                                .addOnSuccessListener {
+                                    editTextInputMess.setText("")
+                                    readChat(idRoomChat)
+                                }
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        // Xử lý lỗi
+                    }
+                })
+
+        } else if(checkRoomChat == false) {
             val roomChatId = "${auth.currentUser?.uid}_${uidPersonal}"
+            val data = RoomChat(roomChatId, auth.currentUser?.uid, uidPersonal)
+            val roomChatData = hashMapOf(
+                "idRoomChat" to data.idRoomChat,
+                "idUser1" to data.idUser1,
+                "idUser2" to data.idUser2
+            )
+            val currentTime = Calendar.getInstance().time
+            val timeFormat = SimpleDateFormat("HH:mm")
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+
             val message = messageModel(
                 auth.currentUser?.uid,
                 uidPersonal,
                 contentMessage,
                 "text",
-                SimpleDateFormat("HH:mm dd/MM/yyyy").format(Calendar.getInstance().time)
+                timeFormat.format(currentTime), // Trường chỉ có giờ và phút
+                dateFormat.format(currentTime),
+                "true_${auth.currentUser?.uid}",
+                "true_${auth.currentUser?.uid}"
             )
+            dbFireStore.collection("RoomChat").add(roomChatData)
+                .addOnSuccessListener {
+                    idRoomChat = roomChatId
 
-            // Check if room chat exists, if not create one
-            dbFireStore.collection("RoomChat")
-                .whereIn("idRoomChat", listOf(roomChatId, "${uidPersonal}_${auth.currentUser?.uid}"))
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (documents.isEmpty) {
-                        // Create a new room chat
-                        val data = RoomChat(roomChatId, auth.currentUser?.uid, uidPersonal)
-                        val roomChatData = hashMapOf(
-                            "idRoomChat" to data.idRoomChat,
-                            "idUser1" to data.idUser1,
-                            "idUser2" to data.idUser2
-                        )
-                        dbFireStore.collection("RoomChat").add(roomChatData)
-                            .addOnSuccessListener { documentReference ->
-                                val messageId = rtDb.getReference("Messages/$roomChatId").push().key ?: ""
-                                rtDb.getReference("Messages/$roomChatId/$messageId").setValue(message).addOnSuccessListener { editTextInputMess.setText("") }
-                            }
-                    } else {
-                        // Use the existing room chat
-                        val messageId = rtDb.getReference("Messages/$roomChatId").push().key ?: ""
-                        rtDb.getReference("Messages/$roomChatId/$messageId").setValue(message).addOnSuccessListener { editTextInputMess.setText("")}
-                    }
+                    // Gửi tin nhắn mới lên cơ sở dữ liệu
+                    val messageId = rtDb.getReference("Messages").child(roomChatId).push().key ?: ""
+                    rtDb.getReference("Messages").child(roomChatId).child(messageId).setValue(message)
+                        .addOnSuccessListener {
+                            editTextInputMess.setText("")
+                            readChat(roomChatId)
+                        }
                 }
         }
     }
+
 
 
 
