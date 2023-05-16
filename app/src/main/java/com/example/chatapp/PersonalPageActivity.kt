@@ -221,7 +221,7 @@ class PersonalPageActivity : AppCompatActivity() {
 
                     }
                 }
-                .addOnFailureListener { e ->
+                .addOnFailureListener { _ ->
                     // Xử lý khi truy vấn thất bại
                 }
         }
