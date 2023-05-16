@@ -242,6 +242,7 @@ class ProFileFragment : Fragment() {
             }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun goToSocialMedia() {
         val userInfoTikTok = dbFireStore.collection("TikTokSocialInfoUsers")
         val userInfoFacebook = dbFireStore.collection("FacebookSocialInfoUsers")
