@@ -313,6 +313,7 @@ class ChatActivity : AppCompatActivity() {
                         .addOnSuccessListener {
                             editTextInputMess.setText("")
                             readChat(roomChatId)
+                            checkRoomChat = true
                         }
                 }
         }
