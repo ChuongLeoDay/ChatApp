@@ -13,6 +13,9 @@ import com.example.chatapp.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+
+
 
 class ChatAdapter(var message: ArrayList<messageModel>, val context: Context) : RecyclerView.Adapter<ChatAdapter.MyViewHolder>() {
 
@@ -23,6 +26,11 @@ class ChatAdapter(var message: ArrayList<messageModel>, val context: Context) : 
     private val requestOptions = RequestOptions()
         .override(120,120)
         .centerCrop()
+        .placeholder(R.drawable.asset_11)
+        .error(R.drawable.danger_triangle_alert_figma)
+
+    private val requestOptions2 = RequestOptions()
+        .transform(RoundedCornersTransformation(32,0)) // Đặt bán kính bo tròn ở đây, ví dụ 8
         .placeholder(R.drawable.asset_11)
         .error(R.drawable.danger_triangle_alert_figma)
 
@@ -53,45 +61,100 @@ class ChatAdapter(var message: ArrayList<messageModel>, val context: Context) : 
         val chat = infoMess.content
 
         if (holder.itemViewType == MESSAGE_TYPE_RIGHT) {
-            holder.textChatAway?.text = chat
-
-            if (infoMess.isLastSend == "true_${infoMess.idUserSend}") {
-                fbFireStore.collection("users")
-                    .whereEqualTo("uid", infoMess.idUserSend)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        if (!documents.isEmpty) {
-                            for (doc in documents) {
-                                Glide.with(context)
-                                    .load(doc.getString("urlImage"))
-                                    .apply(requestOptions)
-                                    .into(holder.imageChatAway)
+            if(infoMess.type == "text") {
+                holder.textChatAway?.text = chat
+                if (infoMess.isLastSend == "true_${infoMess.idUserSend}") {
+                    fbFireStore.collection("users")
+                        .whereEqualTo("uid", infoMess.idUserSend)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            if (!documents.isEmpty) {
+                                for (doc in documents) {
+                                    Glide.with(context)
+                                        .load(doc.getString("urlImage"))
+                                        .apply(requestOptions)
+                                        .into(holder.imageChatAway)
+                                }
                             }
                         }
-                    }
+                }
+                else {
+                    holder.cardViewAwayChat.visibility = View.INVISIBLE
+                }
             }
-            else {
-                holder.cardViewAwayChat.visibility = View.INVISIBLE
+            else if(infoMess.type == "image") {
+                holder.textChatAway.visibility = View.GONE
+                holder.imageSendImage.visibility = View.VISIBLE
+                if (infoMess.isLastSend == "true_${infoMess.idUserSend}") {
+                    fbFireStore.collection("users")
+                        .whereEqualTo("uid", infoMess.idUserSend)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            if (!documents.isEmpty) {
+                                for (doc in documents) {
+                                    Glide.with(context)
+                                        .load(doc.getString("urlImage"))
+                                        .apply(requestOptions)
+                                        .into(holder.imageChatAway)
+                                }
+                            }
+                        }
+                }
+                else {
+                    holder.cardViewAwayChat.visibility = View.INVISIBLE
+                }
+                Glide.with(context)
+                    .load(chat)
+                    .apply(requestOptions2)
+                    .into(holder.imageSendImage)
             }
         } else {
-            holder.textChatAway?.text = chat
-            if (infoMess.isLastSend == "true_${infoMess.idUserSend}") {
-                fbFireStore.collection("users")
-                    .whereEqualTo("uid", infoMess.idUserSend)
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        if (!documents.isEmpty) {
-                            for (doc in documents) {
-                                Glide.with(context)
-                                    .load(doc.getString("urlImage"))
-                                    .apply(requestOptions)
-                                    .into(holder.imageChatAway)
+            if (infoMess.type == "text") {
+                holder.textChatAway?.text = chat
+                if (infoMess.isLastSend == "true_${infoMess.idUserSend}") {
+                    fbFireStore.collection("users")
+                        .whereEqualTo("uid", infoMess.idUserSend)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            if (!documents.isEmpty) {
+                                for (doc in documents) {
+                                    Glide.with(context)
+                                        .load(doc.getString("urlImage"))
+                                        .apply(requestOptions)
+                                        .into(holder.imageChatAway)
+                                }
                             }
                         }
-                    }
+                }
+                else {
+                    holder.cardViewAwayChat.visibility = View.INVISIBLE
+                }
             }
-            else {
-                holder.cardViewAwayChat.visibility = View.INVISIBLE
+            else if(infoMess.type == "image") {
+                holder.textChatAway.visibility = View.GONE
+                holder.imageSendImage.visibility = View.VISIBLE
+                if (infoMess.isLastSend == "true_${infoMess.idUserSend}") {
+                    fbFireStore.collection("users")
+                        .whereEqualTo("uid", infoMess.idUserSend)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            if (!documents.isEmpty) {
+                                for (doc in documents) {
+                                    Glide.with(context)
+                                        .load(doc.getString("urlImage"))
+                                        .apply(requestOptions)
+                                        .into(holder.imageChatAway)
+                                }
+                            }
+                        }
+                }
+                else {
+                    holder.cardViewAwayChat.visibility = View.INVISIBLE
+                }
+                Glide.with(context)
+                    .load(chat)
+                    .apply(requestOptions2)
+                    .into(holder.imageSendImage)
             }
         }
     }
@@ -101,5 +164,7 @@ class ChatAdapter(var message: ArrayList<messageModel>, val context: Context) : 
         val textChatAway: TextView = itemView.findViewById(R.id.content_mess)
         val imageChatAway: ImageView = itemView.findViewById(R.id.imageUser_content)
         val cardViewAwayChat : CardView = itemView.findViewById(R.id.card_view_image_away_chat_room)
+        val imageSendImage : ImageView = itemView.findViewById(R.id.imageView_content_mess_send)
+//        val cardViewImage : CardView = itemView.findViewById(R.id.card_view_image_send_image)
     }
 }

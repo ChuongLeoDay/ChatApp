@@ -37,4 +37,13 @@
             android:text="hello" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView_content_mess_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="0"
+        android:visibility="gone"
+        app:srcCompat="@drawable/add_social_contact_profile_figma" />
+
 </LinearLayout>

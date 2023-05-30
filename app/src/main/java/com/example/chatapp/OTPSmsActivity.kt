@@ -69,9 +69,6 @@ class OTPSmsActivity : AppCompatActivity() {
         }
     }
 
-
-
-
     @SuppressLint("ResourceAsColor")
     private fun resendOTP() : Boolean {
         val textResendOtp : TextView = binding.resendSmsOtp
@@ -98,7 +95,6 @@ class OTPSmsActivity : AppCompatActivity() {
 
         return true
     }
-
 
     private fun addDataUser() {
         val inputNumber1 : TextView = binding.inputCode1

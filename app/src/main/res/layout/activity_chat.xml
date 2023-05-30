@@ -132,7 +132,7 @@
             android:id="@+id/linearLayout11"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_chat_page_personal"
+            android:background="@android:color/transparent"
             android:elevation="4dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -164,7 +164,7 @@
                     <EditText
                         android:id="@+id/edit_text_mess_user_chat"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:ems="10"
@@ -178,7 +178,17 @@
                         android:scrollbars="vertical" />
 
                     <ImageButton
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/btn_send_mess_chat"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="0"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="send_m"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/send_icon_chat_figma_2" />
+
+                    <ImageButton
+                        android:id="@+id/image_choose_file_content"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_weight="0"
@@ -187,26 +197,19 @@
                         app:srcCompat="@drawable/file_icon_chat_figma" />
 
                     <ImageButton
-                        android:id="@+id/imageButton4"
+                        android:id="@+id/image_btn_choose_mess"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_weight="0"
                         android:background="@android:color/transparent"
                         android:contentDescription="clickToChooseImage"
                         app:srcCompat="@drawable/image_choose_icon_chat_figma" />
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
 
-            <ImageButton
-                android:id="@+id/btn_send_mess_chat"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/chat_send_background"
-                android:contentDescription="send_m"
-                app:srcCompat="@drawable/send_icon_chat_figma_2" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,20 +2,15 @@ package com.example.chatapp.Fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapp.Adapter.listMessAdapter
 import com.example.chatapp.Model.listMessModel
 import com.example.chatapp.Model.messageModel
-import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -53,6 +48,7 @@ class MessageFragment : Fragment() {
     private var lastMess: String? = null
     private var timeHour: String? = null
     private var timeDay: String? = null
+    private var typeMess : String? = null
     private var textIsCheckRead: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,6 +128,7 @@ class MessageFragment : Fragment() {
                                                     lastMess = latestMessage.content
                                                     timeHour = latestMessage.timeHour
                                                     timeDay = latestMessage.timedate
+                                                    typeMess = latestMessage.type
                                                     var count  = 0
                                                     for (mes in messages) {
                                                         if(mes.isRead == "false_${idU2}") {
@@ -139,7 +136,7 @@ class MessageFragment : Fragment() {
                                                         }
                                                     }
                                                     textIsCheckRead = count
-                                                    val dataUserFinal = listMessModel(uidUser, imageUser, nameUser, lastMess,timeHour, timeDay,
+                                                    val dataUserFinal = listMessModel(uidUser, imageUser, nameUser, lastMess,typeMess,timeHour, timeDay,
                                                         textIsCheckRead!!
                                                     )
                                                     listUserFinal.add(dataUserFinal)
@@ -214,6 +211,7 @@ class MessageFragment : Fragment() {
                                                 lastMess = latestMessage.content
                                                 timeHour = latestMessage.timeHour
                                                 timeDay = latestMessage.timedate
+                                                typeMess = latestMessage.type
                                                 var count  = 0
                                                 for (mes in messages) {
                                                     if(mes.isRead == "false_${idU1}") {
@@ -221,7 +219,7 @@ class MessageFragment : Fragment() {
                                                     }
                                                 }
                                                 textIsCheckRead = count
-                                                val dataUserFinal = listMessModel(uidUser, imageUser, nameUser, lastMess,timeHour, timeDay,
+                                                val dataUserFinal = listMessModel(uidUser, imageUser, nameUser, lastMess,typeMess,timeHour, timeDay,
                                                     textIsCheckRead!!
                                                 )
                                                 listUserFinal.add(dataUserFinal)
